@@ -1,0 +1,17 @@
+{
+  "name": "playwright-qa-playground",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "playwright test --ui",
+    "startNoUi": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.0.0"
+  }
+}
