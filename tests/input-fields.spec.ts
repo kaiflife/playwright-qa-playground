@@ -1,11 +1,9 @@
-// input-fields.spec.ts
 import { InputFieldsPage } from "@/pages";
 import { test, expect } from "@playwright/test";
 
 test.describe("Тестирование полей ввода", () => {
   let inputPage: InputFieldsPage;
 
-  // Инициализируем страницу и переходим на неё перед каждым тестом
   test.beforeEach(async ({ page }) => {
     inputPage = new InputFieldsPage(page);
     await inputPage.navigate();
