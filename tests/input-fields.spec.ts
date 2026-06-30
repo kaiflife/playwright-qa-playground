@@ -1,71 +1,54 @@
+// input-fields.spec.ts
+import { InputFieldsPage } from "@/pages";
 import { test, expect } from "@playwright/test";
 
-test("Input fields Section One", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
-  const sectionOneText = " my text ";
+test.describe("Тестирование полей ввода", () => {
+  let inputPage: InputFieldsPage;
 
-  const input = page.getByTestId("input-movie-name");
-  await input.waitFor({ state: "visible" });
-  await input.click();
-
-  await page.keyboard.press("End");
-  await page.keyboard.type(sectionOneText);
-
-  await expect(input).toHaveValue(sectionOneText);
-});
-
-test("Input fields Section Two", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
-  const restInputText = " and you too!";
-
-  const input = page.getByTestId("input-append-text");
-
-  await input.click();
-  await page.keyboard.type(restInputText);
-  await page.keyboard.press("Tab");
-
-  await expect(input).toHaveValue(`I am good${restInputText}`);
-  await expect(input).not.toBeFocused();
-});
-
-test("Input fields Section Three", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
-
-  const input = page.getByTestId("input-verify-text");
-  await input.waitFor({ state: "visible" });
-
-  await expect(input).toHaveValue("QA PlayGround");
-});
-
-test("Input fields Section Four", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
-
-  const input = page.getByTestId("input-clear-text");
-  await input.clear();
-
-  await expect(input).toHaveValue("");
-});
-
-test("Input fields Section Five", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
-
-  const input = page.getByTestId("input-disabled");
-
-  expect(input).toBeDisabled();
-
-  const cursorStyle = await input.evaluate((element) => {
-    return window.getComputedStyle(element).cursor;
+  // Инициализируем страницу и переходим на неё перед каждым тестом
+  test.beforeEach(async ({ page }) => {
+    inputPage = new InputFieldsPage(page);
+    await inputPage.navigate();
   });
 
-  await expect(cursorStyle).toBe("not-allowed");
-});
+  test("Input fields Section One", async () => {
+    const textToAppend = " my text ";
 
-test("Input fields Section Six", async ({ page }) => {
-  await page.goto("https://qaplayground.com/practice/input-fields");
+    await inputPage.appendTextToMovieInput(textToAppend);
+    await expect(inputPage.movieInput).toHaveValue(textToAppend);
+  });
 
-  const input = page.getByTestId("input-readonly");
-  await input.click();
-  await page.keyboard.type("This text is changed");
+  test("Input fields Section Two", async () => {
+    const restInputText = " and you too!";
 
-  await expect(input).toHaveValue("This text is readonly");
+    await inputPage.appendTextAndTab(restInputText);
+
+    await expect(inputPage.appendInput).toHaveValue(
+      `I am good${restInputText}`,
+    );
+    await expect(inputPage.appendInput).not.toBeFocused();
+  });
+
+  test("Input fields Section Three", async () => {
+    await inputPage.verifyInput.waitFor({ state: "visible" });
+    await expect(inputPage.verifyInput).toHaveValue("QA PlayGround");
+  });
+
+  test("Input fields Section Four", async () => {
+    await inputPage.clearInputFields();
+    await expect(inputPage.clearInput).toHaveValue("");
+  });
+
+  test("Input fields Section Five", async () => {
+    await expect(inputPage.disabledInput).toBeDisabled();
+    await inputPage.expectInputToHaveCursorStyle(
+      inputPage.disabledInput,
+      "not-allowed",
+    );
+  });
+
+  test("Input fields Section Six", async () => {
+    await inputPage.typeIntoReadonlyInput("This text is changed");
+    await expect(inputPage.readonlyInput).toHaveValue("This text is readonly");
+  });
 });
