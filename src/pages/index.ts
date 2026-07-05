@@ -1,2 +1,1 @@
-export { InputFieldsPage } from "./InputFieldsPage";
-export { ButtonsPage } from "./ButtonsPage";
+export { LoginEduTBankPage } from "./LoginEduTBankPage";

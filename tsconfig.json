@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@test-data/*": ["./test-data/*"]
     },
     "types": ["node"] // <-- Явно указываем TypeScript использовать типы Node.js
   }
