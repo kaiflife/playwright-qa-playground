@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "playwright test --ui",
+    "startUI": "playwright test --ui",
+    "start": "playwright test --headed",
     "startNoUi": "playwright test",
     "startSingleTest": "playwright test tests/buttons.spec.ts -g \"Click go home button\""
   },
